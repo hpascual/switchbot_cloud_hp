@@ -3,6 +3,6 @@
   "country": "DO",
   "homeassistant": "2024.1.0",
   "render_readme": true,
-  "domains": ["switchbot_cloud"],
+  "domains": ["switchbot_cloud_hp"],
   "iot_class": "cloud_polling"
 }

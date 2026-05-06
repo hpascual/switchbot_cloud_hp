@@ -1,0 +1,13 @@
+{
+  "domain": "switchbot_cloud_hp",
+  "name": "SwitchBot Cloud HP",
+  "codeowners": [
+    "@hpascual"
+  ],
+  "config_flow": true,
+  "dependencies": ["webhook"],
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "loggers": ["switchbot_api"],
+  "requirements": ["switchbot-api==2.11.0"]
+}

@@ -4,8 +4,8 @@ from datetime import timedelta
 from enum import Enum
 from typing import Final
 
-DOMAIN: Final = "switchbot_cloud"
-ENTRY_TITLE = "SwitchBot Cloud"
+DOMAIN: Final = "switchbot_cloud_hp"
+ENTRY_TITLE = "SwitchBot Cloud HP"
 DEFAULT_SCAN_INTERVAL = timedelta(seconds=10)
 
 SENSOR_KIND_TEMPERATURE = "temperature"
