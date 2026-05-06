@@ -51,10 +51,7 @@ class SwitchBotCoordinator(DataUpdateCoordinator[Status]):
         """Call when webhook status changed."""
         if self._manageable_by_webhook:
             self._webhooks_connected = connected
-            if connected:
-                self.update_interval = None
-            else:
-                self.update_interval = DEFAULT_SCAN_INTERVAL
+            self.update_interval = DEFAULT_SCAN_INTERVAL
 
     def manageable_by_webhook(self) -> bool:
         """Return update_by_webhook value."""
