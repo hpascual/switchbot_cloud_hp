@@ -1,6 +1,7 @@
 {
   "domain": "switchbot_cloud_hp",
   "name": "SwitchBot Cloud HP",
+  "version": "1.0.0",
   "codeowners": [
     "@hpascual"
   ],
