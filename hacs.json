@@ -1,7 +1,7 @@
 {
   "name": "SwitchBot Cloud HP",
   "country": "DO",
-  "homeassistant": "2024.1.0",
+  "homeassistant": "2026.4.4",
   "render_readme": true,
   "domains": ["switchbot_cloud_hp"],
   "iot_class": "cloud_polling"
