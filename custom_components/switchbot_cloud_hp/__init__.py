@@ -23,8 +23,18 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, ENTRY_TITLE
+from .const import (
+    CONF_AUTO_REGISTER_WEBHOOK,
+    CONF_PUBLIC_URL,
+    DOMAIN,
+    ENTRY_TITLE,
+)
 from .coordinator import SwitchBotCoordinator
+from .switchbot_webhook import (
+    async_delete_webhook,
+    async_query_webhook,
+    async_setup_webhook,
+)
 
 _LOGGER = getLogger(__name__)
 
@@ -89,6 +99,19 @@ def _normalize_mac(value: str | None) -> str:
 def _webhook_id(entry: SwitchbotCloudConfigEntry) -> str:
     """Return stable Home Assistant webhook id for this config entry."""
     return f"{DOMAIN}_{entry.entry_id}"
+
+
+def _build_public_webhook_url(
+    entry: SwitchbotCloudConfigEntry,
+) -> str | None:
+    """Build public SwitchBot webhook URL from configured public base URL."""
+    public_url = entry.data.get(CONF_PUBLIC_URL)
+
+    if not public_url:
+        return None
+
+    public_url = public_url.rstrip("/")
+    return f"{public_url}/api/webhook/{_webhook_id(entry)}"
 
 
 def _store_coordinators(
@@ -188,9 +211,8 @@ def _register_webhook(
         handle_webhook,
         local_only=False,
     )
-
     _LOGGER.warning(
-        "Registered SwitchBot Cloud HP webhook. Webhook path: /api/webhook/%s",
+        "Registered SwitchBot Cloud Push webhook. Webhook path: /api/webhook/%s",
         webhook_id,
     )
 
@@ -202,7 +224,47 @@ def _unregister_webhook(
     """Unregister Home Assistant webhook endpoint."""
     webhook_id = _webhook_id(entry)
     webhook.async_unregister(hass, webhook_id)
-    _LOGGER.info("Unregistered SwitchBot Cloud HP webhook %s", webhook_id)
+    _LOGGER.info("Unregistered SwitchBot Cloud Push webhook %s", webhook_id)
+
+
+async def _async_register_switchbot_cloud_webhook(
+    hass: HomeAssistant,
+    entry: SwitchbotCloudConfigEntry,
+    token: str,
+    secret: str,
+) -> None:
+    """Register this Home Assistant webhook URL in SwitchBot Cloud."""
+    if not entry.data.get(CONF_AUTO_REGISTER_WEBHOOK, True):
+        _LOGGER.info("SwitchBot webhook auto-registration is disabled")
+        return
+
+    public_webhook_url = _build_public_webhook_url(entry)
+
+    if not public_webhook_url:
+        _LOGGER.warning("SwitchBot public URL is not configured")
+        return
+
+    session = async_get_clientsession(hass)
+
+    urls = await async_query_webhook(session, token, secret)
+
+    if public_webhook_url in urls:
+        _LOGGER.warning(
+            "SwitchBot Cloud webhook already registered: %s",
+            public_webhook_url,
+        )
+        return
+
+    for url in urls:
+        _LOGGER.warning("Deleting old SwitchBot webhook URL: %s", url)
+        await async_delete_webhook(session, token, secret, url)
+
+    await async_setup_webhook(session, token, secret, public_webhook_url)
+
+    _LOGGER.warning(
+        "Registered SwitchBot Cloud webhook URL: %s",
+        public_webhook_url,
+    )
 
 
 async def coordinator_for_device(
@@ -512,6 +574,12 @@ async def async_setup_entry(
 
     _store_coordinators(hass, entry, coordinators_by_id)
     _register_webhook(hass, entry)
+    await _async_register_switchbot_cloud_webhook(
+        hass,
+        entry,
+        token,
+        secret,
+    )
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 

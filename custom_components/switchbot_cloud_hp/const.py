@@ -1,11 +1,14 @@
 """Constants for the SwitchBot Cloud integration."""
 
 from datetime import timedelta
-from enum import Enum
 from typing import Final
 
 DOMAIN: Final = "switchbot_cloud_hp"
-ENTRY_TITLE = "SwitchBot Cloud HP"
+ENTRY_TITLE = "SwitchBot Cloud Push"
+
+CONF_PUBLIC_URL = "public_url"
+CONF_AUTO_REGISTER_WEBHOOK = "auto_register_webhook"
+
 DEFAULT_SCAN_INTERVAL = timedelta(minutes=10)
 
 SENSOR_KIND_TEMPERATURE = "temperature"

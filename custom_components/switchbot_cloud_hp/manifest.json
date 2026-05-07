@@ -1,14 +1,12 @@
 {
   "domain": "switchbot_cloud_hp",
-  "name": "SwitchBot Cloud HP",
-  "version": "1.0.0",
-  "codeowners": [
-    "@hpascual"
-  ],
+  "name": "SwitchBot Cloud Push",
+  "version": "1.1.0",
+  "codeowners": ["@hpascual"],
   "config_flow": true,
   "dependencies": ["webhook"],
   "integration_type": "hub",
-  "iot_class": "cloud_polling",
+  "iot_class": "cloud_push",
   "loggers": ["switchbot_api"],
   "requirements": ["switchbot-api==2.11.0"]
 }
