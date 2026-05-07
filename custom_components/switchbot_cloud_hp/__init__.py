@@ -100,11 +100,6 @@ def _store_coordinators(
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {
         "coordinators_by_id": coordinators_by_id,
-        "coordinators_by_mac": {
-            _normalize_mac(coordinator.device_mac): coordinator
-            for coordinator in coordinators_by_id.values()
-            if coordinator.device_mac
-        },
     }
 
 
@@ -115,19 +110,15 @@ def _find_coordinator_for_webhook(
 ) -> SwitchBotCoordinator | None:
     """Find coordinator by SwitchBot webhook deviceMac."""
     domain_data = hass.data.get(DOMAIN, {}).get(entry.entry_id, {})
-    coordinators_by_mac: dict[str, SwitchBotCoordinator] = domain_data.get(
-        "coordinators_by_mac", {}
-    )
+
     coordinators_by_id: dict[str, SwitchBotCoordinator] = domain_data.get(
-        "coordinators_by_id", {}
+        "coordinators_by_id",
+        {},
     )
 
     normalized_mac = _normalize_mac(device_mac)
 
-    return coordinators_by_mac.get(normalized_mac) or coordinators_by_id.get(
-        normalized_mac
-    )
-
+    return coordinators_by_id.get(normalized_mac)
 
 async def _handle_switchbot_webhook(
     hass: HomeAssistant,
