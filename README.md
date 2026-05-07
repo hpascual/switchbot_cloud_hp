@@ -1,86 +1,10 @@
 # SwitchBot Cloud Push
 
-Custom Home Assistant integration for SwitchBot Cloud with real-time webhook updates.
-
-This integration is based on the native Home Assistant SwitchBot Cloud integration, but adds support for SwitchBot Cloud webhooks so supported devices can update Home Assistant almost immediately without aggressive cloud polling.
-
-## What it does
-
-SwitchBot Cloud Push uses two mechanisms:
-
-1. **Cloud webhook push**
-   SwitchBot Cloud sends state changes directly to Home Assistant through a public webhook URL.
-
-2. **Slow cloud polling fallback**
-   Home Assistant still polls the SwitchBot API periodically as a backup, but not every few seconds.
-
-This avoids hitting the SwitchBot Cloud API daily request limit while still giving near real-time updates.
-
-## Supported event examples
-
-Tested with:
-
-- Contact Sensor
-- Water Detector
-- Curtain 3
-
-Observed webhook payloads include:
-
-- `openState`
-- `detectionState`
-- `battery`
-- `brightness`
-- `slidePosition`
-- `calibrate`
-
-## Requirements
-
-You need a public HTTPS URL that SwitchBot Cloud can reach.
-
-Examples:
-
-- Nabu Casa:
-  `https://xxxx.ui.nabu.casa`
-
-- DuckDNS / reverse proxy:
-  `https://your-domain.duckdns.org`
-
-- Cloudflare Tunnel:
-  `https://ha.yourdomain.com`
-
-Do not include `/api/webhook/...` in the configuration. The integration builds that path automatically.
-
-## Installation through HACS
-
-1. Open HACS.
-2. Go to Integrations.
-3. Add this repository as a custom repository.
-4. Category: Integration.
-5. Install.
-6. Restart Home Assistant.
-
-## Configuration
-
-Go to:
-
-Settings → Devices & Services → Add Integration → SwitchBot Cloud Push
-
-Enter:
-
-- SwitchBot API Token
-- SwitchBot API Secret
-- Public Home Assistant URL
-- Auto-register webhook: enabled
-
-Example public URL:
-
-```text
-https://xxxx.ui.nabu.casa
-# SwitchBot Cloud Push
-
 Real-time SwitchBot Cloud integration for Home Assistant using webhook push updates.
 
 This custom integration is based on the native Home Assistant SwitchBot Cloud integration, but extends it with support for SwitchBot Cloud webhooks so devices can update Home Assistant almost instantly without aggressive API polling.
+
+---
 
 ## Main Features
 
@@ -91,6 +15,8 @@ This custom integration is based on the native Home Assistant SwitchBot Cloud in
 - Compatible with Nabu Casa, DuckDNS, reverse proxies and Cloudflare Tunnel
 - Preserves compatibility with existing SwitchBot Cloud entities
 - Supports both local BLE and cloud workflows
+
+---
 
 ## Why this integration exists
 
@@ -109,6 +35,8 @@ The result is:
 - Lower API usage
 - Better responsiveness
 - Lower risk of hitting SwitchBot Cloud limits
+
+---
 
 ## How it works
 
@@ -137,6 +65,8 @@ The integration automatically:
 - Receives push events
 - Updates entities immediately
 
+---
+
 ## Tested Device Types
 
 Currently tested with:
@@ -156,6 +86,8 @@ Observed webhook payload attributes include:
 
 Additional SwitchBot devices may also work depending on the payloads exposed by SwitchBot Cloud.
 
+---
+
 ## Requirements
 
 You need:
@@ -165,6 +97,8 @@ You need:
 - A public HTTPS URL reachable from the internet
 - SwitchBot Cloud API Token
 - SwitchBot Cloud API Secret
+
+---
 
 ## Supported Public URL Examples
 
@@ -200,6 +134,8 @@ Do NOT include:
 
 The integration generates the webhook path automatically.
 
+---
+
 ## Installation via HACS
 
 ### Step 1 — Add Custom Repository
@@ -230,6 +166,8 @@ SwitchBot Cloud Push
 
 2. Install the integration
 3. Restart Home Assistant
+
+---
 
 ## Configuration
 
@@ -279,6 +217,8 @@ When enabled, the integration automatically:
 - Registers the webhook in SwitchBot Cloud
 - Replaces previous SwitchBot webhook URLs if necessary
 
+---
+
 ## Automatic Webhook Registration
 
 SwitchBot Cloud appears to support only one webhook URL per API account.
@@ -295,6 +235,8 @@ The generated webhook URL looks like:
 https://your-domain/api/webhook/switchbot_cloud_hp_ENTRY_ID
 ```
 
+---
+
 ## Recommended Architecture
 
 ### Best Performance
@@ -310,6 +252,8 @@ This gives:
 - Real-time cloud events
 - Reliable fallback polling
 
+---
+
 ## Troubleshooting
 
 ### Webhook not updating entities
@@ -321,10 +265,6 @@ Verify:
 - SwitchBot webhook is correctly registered
 - Home Assistant webhook endpoint exists
 
-### Check registered webhook URL
-
-You can query the registered webhook using the included helper scripts or API calls.
-
 ### Home Assistant logs
 
 Enable debug logs:
@@ -334,6 +274,8 @@ logger:
   logs:
     custom_components.switchbot_cloud_hp: debug
 ```
+
+---
 
 ## Polling Strategy
 
@@ -347,12 +289,16 @@ Default fallback polling interval:
 
 Real-time updates are expected to arrive through webhooks.
 
+---
+
 ## Security Notes
 
 - Your Home Assistant instance becomes reachable through a public HTTPS URL
 - Use HTTPS only
 - Use strong Home Assistant credentials
 - Prefer Nabu Casa, Cloudflare Tunnel or properly secured reverse proxies
+
+---
 
 ## Credits
 

@@ -1,6 +1,7 @@
 """Constants for the SwitchBot Cloud integration."""
 
 from datetime import timedelta
+from enum import Enum
 from typing import Final
 
 DOMAIN: Final = "switchbot_cloud_hp"
@@ -78,7 +79,7 @@ class SwitchbotCloudDeviceLockState(Enum):
     HALF_LOCKED = "halfLocked"
 
     @classmethod
-    def get_states(cls) -> list[SwitchbotCloudDeviceLockState]:
+    def get_states(cls) -> list["SwitchbotCloudDeviceLockState"]:
         """Get lock states."""
         return list(cls)
 
