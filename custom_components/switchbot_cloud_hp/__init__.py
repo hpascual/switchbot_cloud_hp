@@ -176,7 +176,7 @@ def _register_webhook(
         hass: HomeAssistant,
         webhook_id: str,
         request: web.Request,
-    ) -> web.Response:
+    ) -> web.Response | None:
         """Handle incoming webhook request."""
         return await _handle_switchbot_webhook(hass, entry, request)
 
@@ -189,7 +189,7 @@ def _register_webhook(
         local_only=False,
     )
 
-    _LOGGER.info(
+    _LOGGER.warning(
         "Registered SwitchBot Cloud HP webhook. Webhook path: /api/webhook/%s",
         webhook_id,
     )
