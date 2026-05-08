@@ -211,7 +211,7 @@ def _register_webhook(
         handle_webhook,
         local_only=False,
     )
-    _LOGGER.warning(
+    _LOGGER.debug(
         "Registered SwitchBot Cloud Push webhook. Webhook path: /api/webhook/%s",
         webhook_id,
     )
@@ -249,7 +249,7 @@ async def _async_register_switchbot_cloud_webhook(
     urls = await async_query_webhook(session, token, secret)
 
     if public_webhook_url in urls:
-        _LOGGER.warning(
+        _LOGGER.debug(
             "SwitchBot Cloud webhook already registered: %s",
             public_webhook_url,
         )
@@ -555,7 +555,7 @@ async def async_setup_entry(
     except SwitchBotConnectionError as ex:
         raise ConfigEntryNotReady from ex
 
-    _LOGGER.warning("Devices: %s", devices)
+    _LOGGER.debug("Devices: %s", devices)
 
     coordinators_by_id: dict[str, SwitchBotCoordinator] = {}
 
