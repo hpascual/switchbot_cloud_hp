@@ -155,7 +155,7 @@ async def _handle_switchbot_webhook(
         _LOGGER.exception("Invalid SwitchBot webhook payload")
         return web.json_response({"ok": False, "error": "invalid_json"}, status=400)
 
-    _LOGGER.warning("Received SwitchBot webhook payload: %s", payload)
+    _LOGGER.debug("Received SwitchBot webhook payload: %s", payload)
 
     context = payload.get("context")
     if not isinstance(context, dict):

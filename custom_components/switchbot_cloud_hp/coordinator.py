@@ -168,7 +168,7 @@ class SwitchBotCoordinator(DataUpdateCoordinator[Status]):
         # Curtain/Curtain3 already uses slidePosition, battery and calibrate.
         # No transformation needed.
 
-        _LOGGER.warning(
+        _LOGGER.debug(
             "Applying webhook update for %s: %s",
             self._device_id,
             current_data,
