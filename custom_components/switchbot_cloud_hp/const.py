@@ -21,6 +21,19 @@ VACUUM_FAN_SPEED_STANDARD = "standard"
 VACUUM_FAN_SPEED_STRONG = "strong"
 VACUUM_FAN_SPEED_MAX = "max"
 
+VACUUM_DEVICE_TYPES: Final = (
+    "K10+",
+    "K10+ Pro",
+    "Robot Vacuum Cleaner S1",
+    "Robot Vacuum Cleaner S1 Plus",
+    "K20+ Pro",
+    "Robot Vacuum Cleaner K10+ Pro Combo",
+    "Robot Vacuum Cleaner S10",
+    "Robot Vacuum Cleaner S20",
+    "S20",
+    "Robot Vacuum Cleaner K11 Plus",
+)
+
 
 CLIMATE_PRESET_SCHEDULE = "schedule"
 

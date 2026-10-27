@@ -28,6 +28,7 @@ from .const import (
     CONF_PUBLIC_URL,
     DOMAIN,
     ENTRY_TITLE,
+    VACUUM_DEVICE_TYPES,
 )
 from .coordinator import SwitchBotCoordinator
 from .switchbot_webhook import (
@@ -359,22 +360,12 @@ async def make_device_data(
         )
         devices_data.sensors.append((device, coordinator))
 
-    if isinstance(device, Device) and device.device_type in [
-        "K10+",
-        "K10+ Pro",
-        "Robot Vacuum Cleaner S1",
-        "Robot Vacuum Cleaner S1 Plus",
-        "K20+ Pro",
-        "Robot Vacuum Cleaner K10+ Pro Combo",
-        "Robot Vacuum Cleaner S10",
-        "Robot Vacuum Cleaner S20",
-        "S20",
-        "Robot Vacuum Cleaner K11 Plus",
-    ]:
+    if isinstance(device, Device) and device.device_type in VACUUM_DEVICE_TYPES:
         coordinator = await coordinator_for_device(
             hass, entry, api, device, coordinators_by_id, True
         )
         devices_data.vacuums.append((device, coordinator))
+        devices_data.sensors.append((device, coordinator))
 
     if isinstance(device, Device) and device.device_type in [
         "Smart Lock",

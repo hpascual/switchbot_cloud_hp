@@ -13,12 +13,12 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
-    CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
     UnitOfEnergy,
     UnitOfPower,
+    UnitOfRatio,
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant, callback
@@ -26,7 +26,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from . import SwitchbotCloudConfigEntry
-from .const import DOMAIN, SwitchbotCloudDeviceLockState
+from .const import DOMAIN, SwitchbotCloudDeviceLockState, VACUUM_DEVICE_TYPES
 from .coordinator import SwitchBotCoordinator
 from .entity import SwitchBotCloudEntity
 
@@ -120,7 +120,7 @@ CO2_DESCRIPTION = SwitchbotCloudSensorEntityDescription(
     key=SENSOR_TYPE_CO2,
     device_class=SensorDeviceClass.CO2,
     state_class=SensorStateClass.MEASUREMENT,
-    native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+    native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
 )
 
 POWER_CONSUMPTION_DESCRIPTION = SwitchbotCloudSensorEntityDescription(
@@ -282,6 +282,10 @@ SENSOR_DESCRIPTIONS_BY_DEVICE_TYPES = {
         HUMIDITY_DESCRIPTION,
     ),
 }
+
+SENSOR_DESCRIPTIONS_BY_DEVICE_TYPES.update(
+    {device_type: (BATTERY_DESCRIPTION,) for device_type in VACUUM_DEVICE_TYPES}
+)
 
 
 async def async_setup_entry(

@@ -12,6 +12,7 @@ This custom integration is based on the native Home Assistant SwitchBot Cloud in
 - Automatic webhook registration in SwitchBot Cloud
 - Slow fallback polling for reliability
 - Reduced SwitchBot Cloud API usage
+- Vacuum battery level exposed as a dedicated sensor
 - Compatible with Nabu Casa, DuckDNS, reverse proxies and Cloudflare Tunnel
 - Preserves compatibility with existing SwitchBot Cloud entities
 - Supports both local BLE and cloud workflows
