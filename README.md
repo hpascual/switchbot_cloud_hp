@@ -274,7 +274,25 @@ Enable debug logs:
 logger:
   logs:
     custom_components.switchbot_cloud_hp: debug
+    switchbot_api: debug
 ```
+
+### Commands failing with "rate limit" (HTTP 429)
+
+SwitchBot Cloud enforces a request rate limit. When the API answers with
+`429`, commands sent from Home Assistant are retried with exponential backoff
+until a maximum number of attempts.
+
+- Idempotent commands (for example, opening a curtain, setting a position or
+  turning a light on/off) are retried automatically.
+- Non-idempotent commands (Bot presses, IR remote buttons and AI Art Frame
+  buttons) are **not** retried, to avoid sending the action twice.
+- If the limit persists, the service call fails with a readable
+  `HomeAssistantError` (for example `SwitchBot API rate limit (429) reached`)
+  instead of an "Unexpected exception". The command is not applied in that case.
+
+If you see these errors often, reduce the number of commands sent in bursts and
+keep the default 10-minute polling interval.
 
 ---
 

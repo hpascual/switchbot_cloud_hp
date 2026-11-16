@@ -3,17 +3,18 @@
 from dataclasses import dataclass
 from typing import Any
 
+from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from switchbot_api import (
     Commands as SwitchBotCloudBaseCommands,
+)
+from switchbot_api import (
     Device,
     Remote,
     SwitchBotAPI,
 )
 from switchbot_api.commands import ArtFrameCommands, BotCommands, CommonCommands
-
-from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
-from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from . import SwitchbotCloudConfigEntry, SwitchBotCoordinator
 from .entity import SwitchBotCloudEntity
@@ -93,11 +94,11 @@ class SwitchBotCloudBot(SwitchBotCloudEntity, ButtonEntity):
 
     async def async_press(self, **kwargs: Any) -> None:
         """Button press command."""
-        await self._api.send_command(
-            self._device_id,
-            self.entity_description.command.value,
+        await self.send_api_command(
+            self.entity_description.command,
             self.entity_description.command_type,
             self.entity_description.parameters,
+            retry_on_rate_limit=False,
         )
 
 
